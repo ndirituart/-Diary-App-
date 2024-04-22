@@ -1,0 +1,187 @@
+// ignore_for_file: library_private_types_in_public_api
+
+import 'package:flutter/material.dart';
+import 'package:project_idea/pages/calendar.dart';
+import 'package:project_idea/pages/journal.dart';
+// ignore: unused_import
+import 'package:project_idea/pages/main.dart';
+
+// ignore: unused_import
+import 'package:project_idea/pages/login.dart';
+import 'package:project_idea/pages/todolist.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class Dashboard extends StatelessWidget {
+  const Dashboard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: Dashboard(),
+    );
+  }
+}
+
+class MyDashboard extends StatefulWidget {
+  const MyDashboard({super.key});
+
+  @override
+  _MyDashboardState createState() => _MyDashboardState();
+}
+
+class _MyDashboardState extends State<MyDashboard> {
+  int _currentIndex = 0;
+
+//options my user can use on the Diary App. So far they can journal, add events to calendar and have a daily to-do list
+  final _pages = [
+    const JournalPage(),
+    const CalendarPage(),
+    const TodoListPage(),
+  ];
+
+  void _onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+    _showBottomSheet();
+  }
+
+//aligning my dashboard to the left to only enlargen when tapped
+  void _showBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: const Icon(Icons.book),
+              title: const Text('Journal'),
+              onTap: () {
+                {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const JournalPage()),
+                  );
+                }
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.calendar_today),
+              title: const Text('Calendar'),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CalendarPage()),
+                );
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.list),
+              title: const Text('To-do List'),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const TodoListPage()),
+                );
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MyJournalPage()),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MyCalendarPage()),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MyToDoListPage()),
+        );
+        break;
+      default:
+    }
+  }
+
+//dashboard fully appears when tapped
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _pages[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onTabTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: 'Journal',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: 'Calendar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'To-do List',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class JournalPage extends StatelessWidget {
+  const JournalPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text("Journal Page"),
+    );
+  }
+}
+
+class CalendarPage extends StatelessWidget {
+  const CalendarPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text('Calendar Page'),
+    );
+  }
+}
+
+class TodoListPage extends StatelessWidget {
+  const TodoListPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text('To-do List Page'),
+    );
+  }
+}
