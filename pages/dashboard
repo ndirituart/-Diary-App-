@@ -20,7 +20,7 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Dashboard(),
+      home: MyDashboard(),
     );
   }
 }
@@ -36,17 +36,46 @@ class _MyDashboardState extends State<MyDashboard> {
   int _currentIndex = 0;
 
 //options my user can use on the Diary App. So far they can journal, add events to calendar and have a daily to-do list
+  // ignore: unused_field
   final _pages = [
-    const JournalPage(),
-    const CalendarPage(),
-    const TodoListPage(),
+    const MyJournalPage(),
+    const MyCalendarPage(),
+    const MyToDoListPage(),
   ];
 
+  @override
+  Widget build(BuildContext context) {
+    // how to replace this with the homepage file
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("How was your day?"),
+      ),
+      body: Container(
+        color: Colors.pink[200],
+        child: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Do you want to reflect your day, plan tomorrow or plan today's activities?",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ignore: unused_element
   void _onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
     });
-    _showBottomSheet();
+    if (index != 0) {
+      _showBottomSheet();
+    }
   }
 
 //aligning my dashboard to the left to only enlargen when tapped
@@ -65,7 +94,7 @@ class _MyDashboardState extends State<MyDashboard> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const JournalPage()),
+                        builder: (context) => const MyJournalPage()),
                   );
                 }
                 Navigator.pop(context);
@@ -77,7 +106,8 @@ class _MyDashboardState extends State<MyDashboard> {
               onTap: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const CalendarPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const MyCalendarPage()),
                 );
                 Navigator.pop(context);
               },
@@ -88,7 +118,8 @@ class _MyDashboardState extends State<MyDashboard> {
               onTap: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const TodoListPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const MyToDoListPage()),
                 );
                 Navigator.pop(context);
               },
@@ -98,90 +129,5 @@ class _MyDashboardState extends State<MyDashboard> {
       },
     );
   }
-
-  void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-    switch (index) {
-      case 0:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const MyJournalPage()),
-        );
-        break;
-      case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const MyCalendarPage()),
-        );
-        break;
-      case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const MyToDoListPage()),
-        );
-        break;
-      default:
-    }
-  }
-
-//dashboard fully appears when tapped
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onTabTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Journal',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: 'Calendar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'To-do List',
-          ),
-        ],
-      ),
-    );
-  }
 }
 
-class JournalPage extends StatelessWidget {
-  const JournalPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Journal Page"),
-    );
-  }
-}
-
-class CalendarPage extends StatelessWidget {
-  const CalendarPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Calendar Page'),
-    );
-  }
-}
-
-class TodoListPage extends StatelessWidget {
-  const TodoListPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('To-do List Page'),
-    );
-  }
-}
