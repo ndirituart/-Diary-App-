@@ -140,11 +140,12 @@ class _RegistrationFormState extends State<RegistrationForm> {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                // Perform registration
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
+                  // Perform registration
+                  registerUser(); // Implement this function to register the user
 
-                  // Navigate to the dashboard within homepage after user signs up
+                  // Navigate to the dashboard only if registration is successful
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -153,7 +154,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 }
               },
               child: const Text('REGISTER'),
-            ),
+            )
           ],
         ),
       ),
